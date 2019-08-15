@@ -27,7 +27,11 @@ public class JpaMain {
 //            Member member = new Member(); //객체를 생성하고
 //            member.setId(1L); //PK는 반드시 설정하고
 //            member.setName("Hello");
+//            여기까지 비영속 상태
+
+            //영속상태
 //            em.persist(member); // EntityMager.persist() 를 통해 save한다
+            //사실 이때 DB에 저장되지 않음(쿼리를 날리지 않음)
 
             /*READ*/
 //            Member findMember = em.find(Member.class, 1L);
@@ -58,7 +62,7 @@ public class JpaMain {
                 System.out.println("memberName =" + member.getName());
             }
             
-            tx.commit();
+            tx.commit(); //이 시점에서 DB에 쿼리가 날아감
         } catch (Exception e) {
             e.printStackTrace();
             tx.rollback(); // 문제가 생겼을 경우 commit 이되면 안되므로 rollback 처리를 위한 try-catch
