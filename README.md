@@ -78,4 +78,7 @@
 - 객체와 테이블 매핑 // @Entity, @Table
 - 데이터베이스 스키마 자동 생성
 - 필드와 컬럼 매핑 //Column
-- 기본 키 매핑 
+- 기본 키 매핑
+- Enumerated(EnumType.ORIDNAL) 을 쓰면 안되는이유?
+  - INTEGER 타입으로 순서가 들어가기 때문에
+  - ENUM 타입이 추가되면 알 수가없다..
