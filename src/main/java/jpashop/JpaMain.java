@@ -23,10 +23,13 @@ public class JpaMain {
             Order order = em.find(Order.class, 1L);
             Long memberId = order.getMemberId();
 
-            //Member member = em.find(Member.class, memberId); //객체지향 스럽지못하다 -> 끊키게 돼
+            /*데이터 중심 설계의 문제점*/
+            Member member = em.find(Member.class, memberId);
+            // 객체 설계를 테이블 설계에 맞춘 방식
+            // 테이블의 외래키를 객체에 그대로 가져옴
+            // 객체 그래프 탐색이 불가능
             Member findMember = order.getMember(); // 객체는 참조로 쭉쭉쭉 찾을 수 있어야 해
             //그래서 연관관계 매핑이란게 필요해~
-
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
