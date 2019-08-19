@@ -82,3 +82,36 @@
 - Enumerated(EnumType.ORIDNAL) 을 쓰면 안되는이유?
   - INTEGER 타입으로 순서가 들어가기 때문에
   - ENUM 타입이 추가되면 알 수가없다..
+
+#### 2-1. 기본 키 매핑
+- @GeneratedValue(strategy = GenerationType.X)
+  - IDENTITY : 기본 키 생성을 데이터베이스에 위임 // auto_increment
+  - SEQUENCE : 유일한 값을 순서대로 생성하는 데이터베이스 오브젝트
+  - TABLE : 키 생성 전용 테이블을 하나 만들어서 데이터베이스 시퀀스를 흉내냄
+- 권장하는 식별자 전략
+  - 기본 키 제약 조건 : Not Null, unique, **변하면 안된다**
+  - 미래까지 이 조건을 만족하는 자연키(email, 전화번호) 찾기 어렵다-> 대리키 사용
+  - 주민등록번호도 적절하지 않음
+  - LONG형 + 대체키 + 키 생성전략 사용
+  
+#### 2-2. IDENTITY 전략 - 특징
+- 상황 : 내가 값을 넣지 않는다 (Null 이면 자동으로 값을 setting 해줌)
+- 뭐가 문제? DB에 가봐야 ID값을 알 수 있다.
+- 그런데 영속성 컨텍스트에서 관리 되려면 무조건 PK값이 있어야 함
+- em.persist() 를 호출하자마자 바로 DB에 Insert 쿼리를 날림 // commit 시점이아니라
+- 즉 모아서 INSERT 하는 것이 IDENTITY에서는 불가능 함
+
+#### 2-3. SEQUENCE 전략 - 특징
+- 마찬가지로 PK를 먼저 가져와야 해
+- DB에 다음값을 받아와서 영속성 컨텍스트에 저장
+- PK값만 받아오기 때문에 INSERT 쿼리는 안날아가~ // commit 시점에 INSERT
+- 버퍼링 가능
+- 성능상으로 그냥 INSERT 하면 되지않을까..?
+  - allocationSize를 통해 미리 50개 size를 DB에 올려놓고 쓰면
+  - next call을 매번 안해도 돼
+  - **동시성 이슈없이 다양한 문제 해결 가능**
+  - DB SEQ = 1 이네? 한번 더 호출 해서 DB SEQ = 51 미리 확보
+  - DB SEQ = 1 | 1 //실제 사용 메모리
+  - DB SEQ = 51 | 2
+  - DB SEQ = 51 | 3 ... 
+  - DB SEQ = 51 | 51 -> DB SEQ = 101
