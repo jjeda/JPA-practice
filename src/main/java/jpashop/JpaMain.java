@@ -1,5 +1,8 @@
 package jpashop;
 
+import jpashop.domain.Member;
+import jpashop.domain.Order;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -17,9 +20,16 @@ public class JpaMain {
         tx.begin();
 
         try {
-            tx.commit(); //이 시점에서 DB에 쿼리가 날아감
+            Order order = em.find(Order.class, 1L);
+            Long memberId = order.getMemberId();
+
+            //Member member = em.find(Member.class, memberId); //객체지향 스럽지못하다 -> 끊키게 돼
+            Member findMember = order.getMember(); // 객체는 참조로 쭉쭉쭉 찾을 수 있어야 해
+            //그래서 연관관계 매핑이란게 필요해~
+
+            tx.commit();
         } catch (Exception e) {
-            tx.rollback(); // 문제가 생겼을 경우 commit 이되면 안되므로 rollback 처리를 위한 try-catch
+            tx.rollback();
         } finally {
             em.close();
         }
