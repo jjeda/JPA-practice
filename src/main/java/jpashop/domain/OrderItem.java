@@ -1,9 +1,6 @@
 package jpashop.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class OrderItem {
@@ -12,13 +9,21 @@ public class OrderItem {
     @Column(name = "ORDER_ITEM_ID")
     private Long id;
 
-    @Column(name = "ORDER_ID")
-    private Long oderId;
+//    @Column(name = "ORDER_ID")
+//    private Long oderId;
+//
+//    @Column(name = "ITEM_ID")
+//    private Long itemId;
 
-    @Column(name = "ITEM_ID")
-    private Long itemId;
+    @ManyToOne
+    @JoinColumn(name = "ORDER_ID")
+    private Order order;
 
-    private int oderPrice;
+    @ManyToOne
+    @JoinColumn(name = "ITED_ID")
+    private Item item;
+
+    private int orderPrice;
     private int count;
 
     public Long getId() {
@@ -29,28 +34,28 @@ public class OrderItem {
         this.id = id;
     }
 
-    public Long getOderId() {
-        return oderId;
+    public Order getOrder() {
+        return order;
     }
 
-    public void setOderId(Long oderId) {
-        this.oderId = oderId;
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
-    public Long getItemId() {
-        return itemId;
+    public Item getItem() {
+        return item;
     }
 
-    public void setItemId(Long itemId) {
-        this.itemId = itemId;
+    public void setItemId(Item item) {
+        this.item = item;
     }
 
     public int getOderPrice() {
-        return oderPrice;
+        return orderPrice;
     }
 
-    public void setOderPrice(int oderPrice) {
-        this.oderPrice = oderPrice;
+    public void setOderPrice(int orderPrice) {
+        this.orderPrice = orderPrice;
     }
 
     public int getCount() {
