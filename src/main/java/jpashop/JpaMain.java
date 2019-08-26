@@ -32,8 +32,10 @@ public class JpaMain {
             //Member findMember = order.getMember(); // 객체는 참조로 쭉쭉쭉 찾을 수 있어야 해
             //그래서 연관관계 매핑이란게 필요해~
 
-            Order order = new Order();
-            order.addOrderItem(new OrderItem());
+           em.createQuery(
+                   "select m From Member m where m.username like '%kim%'",
+                   Member.class
+           ).getResultList();
 
 
             tx.commit();
