@@ -336,7 +336,8 @@ class Proxy {
 - 백선장님 JPA 프로그래밍 5.엔티티 상태와 Cascade
   - cascade 예제에서 @ManyToOne 설정을 해서 Owner가 됐다.
   - Owner에서 set하고 save했는데 왜 One부분에 테이블이 안올라갔지?
-    - ->
+    - -> 자세히 보니 post(부모) 만 저장을 했네..
+    - -> 그래서 이 라이프사이클을 자식이자 owner인 comment 와 함께하기위해 cascade를 쓴 것
   - CASCADE.ALL 을 쓰면 어짜피 부모객체 지웠을 때 자식 객체 지워질텐데 orpanremoval이 필요한이유가 뭘까?
     - -> 부모객체를 삭제하는 상황이 아니라 자식노드만 부모 객체에서 떼어내는 경우에
     - -> 부모 테이블에서 삭제는 됐지만 아직 자식객체 테이블에는 남아있겠지?
